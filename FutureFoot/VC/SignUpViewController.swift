@@ -10,8 +10,7 @@ import UIKit
 import FirebaseAuth
 import FirebaseDatabase
 
-class SignUpViewController: UIViewController {
-
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -20,7 +19,8 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var birthdayPicker: UIDatePicker!
     
     var ref: DatabaseReference!
-
+    var helpTextField:UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         ref = Database.database().reference()
@@ -94,6 +94,52 @@ class SignUpViewController: UIViewController {
             }
         }
         
+    }
+    
+    //MARK: -TextFieldDelegate
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        helpTextField = textField
+    }
+    
+    @objc func keyboardWillShow(_ notification:Notification) {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        
+        if keyboardSize.cgRectValue.origin.y < (helpTextField.frame.origin.y + helpTextField.frame.size.height) {
+            //keyboard covers textfield so we move it up!
+            let heigthToMoveUp = (helpTextField.frame.origin.y + helpTextField.frame.size.height) - keyboardSize.cgRectValue.size.height
+            view.frame.origin.y -= heigthToMoveUp
+        }
+        
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification){
+        view.frame.origin.y = 0
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
     func showAlert(message:String){

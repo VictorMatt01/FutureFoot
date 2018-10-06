@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseDatabase
 
-class AddPlayerViewController: UIViewController {
+class AddPlayerViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
@@ -19,6 +19,7 @@ class AddPlayerViewController: UIViewController {
     var teamOfPlayer:Team!
     var ref: DatabaseReference!
     let object = UIApplication.shared.delegate as! AppDelegate
+    var helpTextField:UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,6 +53,7 @@ class AddPlayerViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    //MARK: -AlertMessage
     func showAlert(message:String){
         let alert = UIAlertController(title: "Alert", message: "\(message)", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
@@ -64,6 +66,52 @@ class AddPlayerViewController: UIViewController {
                 print("destructive")
             }}))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    //MARK: -TextFieldDelegate
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    func subscribeToKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(_:)), name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func unsubscribeFromKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        helpTextField = textField
+    }
+    
+    @objc func keyboardWillShow(_ notification:Notification) {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
+        
+        if keyboardSize.cgRectValue.origin.y < (helpTextField.frame.origin.y + helpTextField.frame.size.height) {
+            //keyboard covers textfield so we move it up!
+            let heigthToMoveUp = (helpTextField.frame.origin.y + helpTextField.frame.size.height) - keyboardSize.cgRectValue.size.height
+            view.frame.origin.y -= heigthToMoveUp
+        }
+        
+    }
+    
+    @objc func keyboardWillHide(_ notification:Notification){
+        view.frame.origin.y = 0
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
     
 }

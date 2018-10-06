@@ -17,6 +17,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     var dataController:DataController!
     var activeField: UITextField?
+    var helpTextField:UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,14 +82,20 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
     }
     
-    @objc func keyboardWillShow(_ notification:Notification) {
-        view.frame.origin.y -= getKeyboardHeight(notification)
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        helpTextField = textField
     }
     
-    func getKeyboardHeight(_ notification:Notification) -> CGFloat {
+    @objc func keyboardWillShow(_ notification:Notification) {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameEndUserInfoKey] as! NSValue // of CGRect
-        return keyboardSize.cgRectValue.height
+        
+        if keyboardSize.cgRectValue.origin.y < (helpTextField.frame.origin.y + helpTextField.frame.size.height) {
+            //keyboard covers textfield so we move it up!
+            let heigthToMoveUp = (helpTextField.frame.origin.y + helpTextField.frame.size.height) - keyboardSize.cgRectValue.size.height
+            view.frame.origin.y -= heigthToMoveUp
+        }
+        
     }
     
     @objc func keyboardWillHide(_ notification:Notification){
