@@ -36,7 +36,7 @@ class AccountViewController: UIViewController, UIImagePickerControllerDelegate, 
         setScreen()
     }
     
-    @IBAction func EditImageTapped(_ sender: Any) {
+    @IBAction func editImageTapped(_ sender: Any) {
         let optionMenu = UIAlertController(title: nil, message: "choose an option", preferredStyle: .actionSheet)
         let photoLibraryAction = UIAlertAction(title: "photoLibrary", style: .default) { (alert) in
             self.pickImageFromLibrary()

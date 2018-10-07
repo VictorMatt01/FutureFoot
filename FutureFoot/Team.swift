@@ -15,7 +15,6 @@ class Team {
     
     init(initDic:NSDictionary) {
         self.teamName = initDic["teamName"] as! String
-        self.countPlayers = initDic["countPlayers"] as! String
         self.players = []
         self.coachName = initDic["coachName"] as! String
     }

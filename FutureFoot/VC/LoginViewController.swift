@@ -26,6 +26,17 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotifications()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unsubscribeFromKeyboardNotifications()
+    }
+    
+    
     @IBAction func loginTapped(_ sender: Any) {
         guard let email = emailTextField.text, !email.isEmpty else {
             showAlert(message: "firstName textfield is nil or empty.")
@@ -50,7 +61,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 self.present(homeTabBarVC, animated: true, completion: nil)
             }else {
                 DispatchQueue.main.async {
-                    self.showAlert(message: "\(String(describing: error?.localizedDescription))")
+                    self.showAlert(message: "\(error?.localizedDescription))")
                 }
             }
         }
@@ -62,15 +73,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
     //MARK: -TextFieldDelegate
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        subscribeToKeyboardNotifications()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unsubscribeFromKeyboardNotifications()
-    }
     
     func subscribeToKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: .UIKeyboardWillShow, object: nil)
@@ -78,8 +80,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     func unsubscribeFromKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

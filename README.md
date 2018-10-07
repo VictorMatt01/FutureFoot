@@ -17,6 +17,10 @@ It also has the function to save different teams with different players.
 4) ACCOUNT
     The last tab is the account tab of the app. Here the user can see his own information, name, email, birthday. If the user wants to sign out he can do it here. The acoount tab has also the function of saving a profile picture of the user. The user can edit this image at all times.
 
+-- INSTALLATION --
+In this app we use Cocoapods to build and run our app. It's important that the user downloads the right files. This link can be helpfull tool to do so: https://guides.cocoapods.org/using/getting-started.html 
+Tha app also uses firebase from Google, the user don't need to install any extra files for this. If you want more info about firebase you can click this link: https://firebase.google.com 
+
 -- BUGS --
 If you find any bugs or major problems in the app, please send an email to matthijs.victor.dev@gmail.com.
 

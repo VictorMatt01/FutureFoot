@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import FirebaseDatabase
 
-class SpecificTeamViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SpecificTeamViewController: UIViewController{
     
     @IBOutlet weak var specificTeamTableView: UITableView!
     
@@ -30,6 +30,7 @@ class SpecificTeamViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadPlayers()
     }
     
@@ -55,8 +56,10 @@ class SpecificTeamViewController: UIViewController, UITableViewDelegate, UITable
             self.specificTeamTableView.reloadData()
         }
     }
+}
+
+extension SpecificTeamViewController: UITableViewDelegate, UITableViewDataSource {
     
-    //MARK: -Tableview
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return players.count
     }
@@ -81,5 +84,4 @@ class SpecificTeamViewController: UIViewController, UITableViewDelegate, UITable
         
     }
     
-
 }

@@ -329,6 +329,7 @@
                                 </state>
                                 <connections>
                                     <action selector="EditImageTapped:" destination="l4N-jG-TY5" eventType="touchUpInside" id="xbf-zy-J0C"/>
+                                    <action selector="editImageTapped:" destination="l4N-jG-TY5" eventType="touchUpInside" id="B47-cD-4d3"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pPG-vU-Rrn">

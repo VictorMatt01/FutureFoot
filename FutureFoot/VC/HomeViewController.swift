@@ -34,11 +34,10 @@ class HomeViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let fetchRequest:NSFetchRequest<TrainingImage> = TrainingImage.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        do {
-            trainingImages = try dataController.viewContext.fetch(fetchRequest)
+        
+        if let result = try? dataController.viewContext.fetch(fetchRequest) {
+            trainingImages = result
             trainingCollectionView.reloadData()
-        } catch {
-            showAlert(message: "Fetching Failed")
         }
     }
     
