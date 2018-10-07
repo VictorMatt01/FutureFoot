@@ -20,6 +20,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     var ref: DatabaseReference!
     var helpTextField:UITextField!
+    var dataController:DataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +79,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                             case .default:
                                 //show login screen
                                 let loginScreen = self.storyboard?.instantiateViewController(withIdentifier: "loginVC") as! LoginViewController
+                                loginScreen.dataController = self.dataController
                                 self.present(loginScreen, animated: true, completion: nil)
                             case .cancel:
                                 print("cancel")

@@ -70,6 +70,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     @IBAction func signUpButtonTapped(_ sender: Any) {
         let signUpVC = storyboard?.instantiateViewController(withIdentifier: "signUpWindow") as! SignUpViewController
+        signUpVC.dataController = dataController
         self.navigationController?.pushViewController(signUpVC, animated: true)
     }
     //MARK: -TextFieldDelegate
